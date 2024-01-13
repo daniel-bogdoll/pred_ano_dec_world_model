@@ -99,7 +99,7 @@ def getFgBboxes(cur_img, img_batch, bboxes, dataset_name):
         sum_grad[extend_y1:extend_y2 + 1, extend_x1:extend_x2 + 1] = 0
 
     sum_grad = cv2.cvtColor(sum_grad, cv2.COLOR_BGR2GRAY)
-    contours, hierarchy = cv2.findContours(sum_grad, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(sum_grad, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2:]
     fg_bboxes = []
     for c in contours:
         x, y, w, h = cv2.boundingRect(c)
@@ -123,6 +123,8 @@ def obj_bboxes_extraction(dataset_root, dataset_name, mode):
     dataset = get_dataset(dataset_name=dataset_name,
                           dir=os.path.join(dataset_root, dataset_name),
                           context_frame_num=1, mode=mode)
+    
+    print(os.path.join(dataset_root, dataset_name))
 
     mm_det_model = init_detector(mm_det_config_file, mm_det_ckpt_file, device="cuda:0")
 
@@ -145,7 +147,7 @@ def obj_bboxes_extraction(dataset_root, dataset_name, mode):
             cur_bboxes = obj_bboxes
 
         all_bboxes.append(cur_bboxes)
-
+    
     np.save(os.path.join(os.path.join(dataset_root, dataset_name),
                          '%s_bboxes_%s.npy' % (dataset_name, mode)), all_bboxes)
     print('bboxes saved!')
