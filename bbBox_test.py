@@ -20,7 +20,7 @@ def add_bounding_boxes(contours, label, color):
         cv2.rectangle(image, (x, y), (x+w, y+h), color, 2)
 
 add_bounding_boxes(pedestrian_contours, 'pedestrian', (255, 0, 0)) # Blaue Boxen für Fußgänger
-add_bounding_boxes(vehicle_contours, 'vehicle', (0, 255, 0)) # Grüne Boxen für Fahrzeuge
+add_bounding_boxes(vehicle_contours, 'vehicle', (0, 255, 0)) # Grüne Boxen für Fahrzeugeq
 
 np.save('/mnt/data/bounding_boxes.npy', bounding_boxes)
 
